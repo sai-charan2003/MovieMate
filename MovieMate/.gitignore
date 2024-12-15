@@ -13,7 +13,8 @@ DerivedData/
 # Swift package manager
 .build/
 .swiftpm/
-.Config.xcconfig
+*.xcconfig
+
 
 
 # CocoaPods

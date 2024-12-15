@@ -9,57 +9,78 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-    
+    @State private var selectedMovieId: String?
+    @State private var isShowingSheet = false
+    @State private var selectedUPcomingMove : UpcomingResult?
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.items,id: \.self){ movies in
-                    HStack {
+            VStack(alignment: .leading) {
+                Text("Trending Movies")
+                    .padding()
+                    .bold()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    
+                    HStack(spacing: 16) {
                         
-                        AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/w500\(movies.backdropPath!)")) { image in
-                            image
-                                .resizable()
-                            
-                                .frame(width: 100, height: 50)
-                                .cornerRadius(8)
-                                .aspectRatio(contentMode : .fill)
-                                
-                            
-                        } placeholder: {
-                            ProgressView()
+                        ForEach(viewModel.items, id: \.self) { movie in
+                            VStack {
+                                MovieCardView(imageURL: movie.posterPath!, title: movie.title!)
+                                    .onTapGesture {
+                                        
+                                        isShowingSheet = true
+                                        selectedMovieId = String(movie.id!)
+                                    }
+ 
+                            }
                         }
-                            Text(movies.title ?? "New")
-                        
-                            
-                        
-                        
                     }
-                    
-                    
-                    .padding(.vertical,10)
-                    .listRowSeparator(.hidden)
-                    
-                    
+                    .padding(.horizontal, 16)
                 }
-            }
-            .listStyle(PlainListStyle())
-            
-            
-            
-            
-            
-            .navigationTitle("Trending Movies")
-            .onAppear{
-                viewModel.fetchData()
-            }
-            
-        }
+  
+                
+                Text("Upcoming Movies")
+                    .padding()
+                    .bold()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    
+                    HStack(spacing: 16) {
+                        
+                        ForEach(viewModel.upcomingMovies, id: \.self) { movie in
+                            VStack {
+                                MovieCardView(imageURL: movie.posterPath!, title: movie.title!)
+                                    .onTapGesture {
+                                        isShowingSheet = true
+                                        selectedMovieId = String(movie.id!)
+                                    }
 
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }
+                .padding(.vertical, 10)
+                
+                Spacer()
+            }
+            .navigationTitle("Movies")
+            .onAppear {
+                viewModel.fetchTrendingMovies()
+                viewModel.fetchUpcomingData()
+            }
+            .sheet(isPresented : $isShowingSheet){
+                MovieDetailsContentView(
+                    id: selectedMovieId
+
+                )
+                
+                
+            }
+        }
     }
 }
 
-struct HomeView_Preview : PreviewProvider {
+struct HomeView_Preview: PreviewProvider {
     static var previews: some View {
         HomeView()
     }

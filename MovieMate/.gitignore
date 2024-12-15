@@ -1,0 +1,28 @@
+# Xcode
+#
+# User-specific files
+*.xcuserstate
+
+# Build generated files
+build/
+DerivedData/
+
+# Xcode workspace settings
+*.xcworkspace
+
+# Swift package manager
+.build/
+.swiftpm/
+.Config.xcconfig
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/
+
+# Other files to ignore
+*.log
+*.swp
+.DS_Store
+

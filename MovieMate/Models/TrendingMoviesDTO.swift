@@ -13,7 +13,7 @@
 import Foundation
 
 // MARK: - MoviesdDetails
-struct MoviesdDetails: Codable {
+struct TrendingMoviesDTO: Codable {
     let page: Int?
     let results: [Result]?
     let totalPages, totalResults: Int?

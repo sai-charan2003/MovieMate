@@ -96,12 +96,14 @@ struct MovieDetailsContentView: View {
                         .padding()
                 }
                 .frame(maxHeight: .infinity, alignment: .center)
+            
             }
         }
         .onAppear {
             guard let movieID = id else { return }
             viewModel.fetchMovieDetails(id: movieID)
         }
+        .ignoresSafeArea()
     }
 }
 

@@ -37,6 +37,7 @@ class HomeViewModel: ObservableObject {
             do {
                 
                 let result = try JSONDecoder().decode(TrendingMoviesDTO.self, from: data)
+                print(result)
                 
                 DispatchQueue.main.async {
                     self.items = result.results!

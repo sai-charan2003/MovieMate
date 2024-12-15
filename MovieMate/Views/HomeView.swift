@@ -27,9 +27,10 @@ struct HomeView: View {
                             VStack {
                                 MovieCardView(imageURL: movie.posterPath!, title: movie.title!)
                                     .onTapGesture {
+                                        selectedMovieId = String(movie.id!)
                                         
                                         isShowingSheet = true
-                                        selectedMovieId = String(movie.id!)
+                                        
                                     }
  
                             }
@@ -50,8 +51,9 @@ struct HomeView: View {
                             VStack {
                                 MovieCardView(imageURL: movie.posterPath!, title: movie.title!)
                                     .onTapGesture {
-                                        isShowingSheet = true
                                         selectedMovieId = String(movie.id!)
+                                        isShowingSheet = true
+                                        
                                     }
 
                             }
@@ -68,14 +70,28 @@ struct HomeView: View {
                 viewModel.fetchTrendingMovies()
                 viewModel.fetchUpcomingData()
             }
-            .sheet(isPresented : $isShowingSheet){
-                MovieDetailsContentView(
-                    id: selectedMovieId
+            .sheet(isPresented: $isShowingSheet) {
+                NavigationView {
+                    MovieDetailsContentView(
+                        id: selectedMovieId
+                    )
+                    .navigationBarItems(leading: HStack {
+                        
+                        Image(systemName: "arrow.left")
 
-                )
-                
-                
+                        Text("Back")
+                            
+                    }
+                        .onTapGesture {
+                            isShowingSheet = false
+                        }
+                    )
+                    .onDisappear {
+                        isShowingSheet = false
+                    }
+                }
             }
+
         }
     }
 }
